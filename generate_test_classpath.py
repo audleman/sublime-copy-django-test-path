@@ -9,6 +9,11 @@ class GenerateTestsClasspathCommand(sublime_plugin.TextCommand):
 
         api.tests.test_model.TestUserProfile.test_foo
 
+    Caveats:
+        - Expects your code to be in a directory named `src`. Better would be
+          to walk the path until I find the .git directory
+        - May not always work, e.g. if you click above the top test class. In
+          that case it will simply show an error in the status line
     """
 
     def find_containing_class(self, sel):
