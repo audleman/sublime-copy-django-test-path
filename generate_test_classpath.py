@@ -42,18 +42,21 @@ class GenerateTestsClasspathCommand(sublime_plugin.TextCommand):
         return name, closest[0]
 
     def run(self, edit):
-        # Get filename, concat everything past 'src'
-        f_parts = self.view.file_name().replace('.py', '').split('/')
-        f_path = '.'.join(f_parts[f_parts.index('src') + 1:])
-        # Grab cursor point (230, 230)
-        sel = self.view.sel()[0]
-        fun_name, fun_dist = self.find_containing_function(sel)
-        class_name, class_dist = self.find_containing_class(sel)
-        # Get full line, including trailing newline so we can insert on next
-        # line = self.view.full_line(sel)
-        # Insert the text
-        f_path = '%s.%s' % (f_path, class_name)
-        if fun_dist < class_dist:
-            f_path = '%s.%s' % (f_path, fun_name)
-        sublime.set_clipboard(f_path)
-        self.view.set_status('key', f_path)
+        try:
+            # Get filename, concat everything past 'src'
+            f_parts = self.view.file_name().replace('.py', '').split('/')
+            f_path = '.'.join(f_parts[f_parts.index('src') + 1:])
+            # Grab cursor point. Use full line to get to start of line
+            sel = self.view.full_line(self.view.sel()[0])
+            fun_name, fun_dist = self.find_containing_function(sel)
+            class_name, class_dist = self.find_containing_class(sel)
+            # Get full line, including trailing newline so we can insert on next
+            # line = self.view.full_line(sel)
+            # Insert the text
+            f_path = '%s.%s' % (f_path, class_name)
+            if fun_dist < class_dist and fun_name != 'setUp':
+                f_path = '%s.%s' % (f_path, fun_name)
+            sublime.set_clipboard(f_path)
+            self.view.set_status('key', f_path)
+        except:
+            self.view.set_status('key', 'something went wrong')
