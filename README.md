@@ -10,7 +10,7 @@ out what it is and copy it to the clipboard for me.
 Clone the repo in your Plugins folder. For OSX:
 
 ```
-git clone git@github.com:audleman/sublime-copy-django-test-path.git ~/Library/Application Support/Sublime Text 2/Packages $ cd ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/CopyDjangoTestPath
+git clone git@github.com:audleman/sublime-copy-django-test-path.git ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/CopyDjangoTestPath
 ```
 
 ## How to use
