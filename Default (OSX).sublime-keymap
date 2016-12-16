@@ -1,5 +1,5 @@
 [
     { 
-        "keys": ["ctrl+alt+e"], "command": "generate_tests_classpath"
+        "keys": ["ctrl+alt+q"], "command": "run_tests_file"
     }
 ]

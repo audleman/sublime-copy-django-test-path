@@ -1,12 +1,10 @@
 [
 {
-    "id": "find",
+    "id": "tools",
     "children":
     [
-        {
-            "caption": "Copy Django Test Path",
-            "command": "generate_tests_classpath"
-        }
+        {"caption": "-"},
+        {"caption": "Run test(s)", "command": "run_tests_file" }
     ]
 }
 ]
