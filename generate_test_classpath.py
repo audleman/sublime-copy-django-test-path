@@ -1,16 +1,18 @@
 import sublime, sublime_plugin
 import re
+import os
 
 
 class RunTestsMixin(object):
 
-    def find_project_root():
+    def find_project_root(current_directory):
         """
         Start at current directory. Walk up the tree until we find `manage.py`
         """
         MAX_CONFIG_SEARCH_DEPTH = 20
+        tries = 0
         while current_directory and tries < MAX_CONFIG_SEARCH_DEPTH:
-            potential_path = os.path.join(current_directory, native_str(name))
+            potential_path = os.path.join(current_directory, 'manage.py')
             if os.path.exists(potential_path):
                 editor_config_file = potential_path
                 break
@@ -23,8 +25,8 @@ class RunTestsMixin(object):
 
     def find_containing_class(self, sel):
         """
-        Extract the name of the class above the selection point. Return both
-        name and distance from cursor.
+        Extract the name of the first class above the selection point. Return
+        both name and distance from cursor.
         """
         class_defs = self.view.find_all('^class')
         distances = [(sel.a - cd.a, cd) for cd in class_defs]
@@ -62,20 +64,22 @@ class RunTestsMixin(object):
                 "file": "config/Shell/Main.sublime-menu"
             }
         )
+        # Run the tests in our shell tab. It was tricky to figure out how to
+        # properly pass commands and have them be immediately evaluated
         cmds = [
             'cd ~/robot/malta/',
-            'venv/bin/python manage.py test %s' % test_path]
-        for cmd in cmds:
-            sublime.active_window().run_command(
-                'repl_view_write', {
-                    "external_id": "shell",
-                    "text": '\n' + cmd})
+            'source venv/bin/activate',
+            'python manage.py test %s' % test_path]
+        sublime.active_window().run_command(
+            'repl_send', {
+                "external_id": "shell",
+                "text": '\n'.join(cmds)})
 
 
 class RunTestsFileCommand(RunTestsMixin, sublime_plugin.TextCommand):
     """
-    Runs tests based on the position of the cursor. Can run one of the
-    following, based on where the cursor is:
+    Runs tests based on the position of the cursor. Will run one of the
+    following, based on the position of the cursor
 
         - an individual test, if in a function named `test_`
         - a test class, if in a class starting with `Test`
@@ -84,6 +88,10 @@ class RunTestsFileCommand(RunTestsMixin, sublime_plugin.TextCommand):
     """
 
     def get_path(self):
+        """
+        Gets the path of the currently selected file, then drills down and
+        tries to get a test class, test method.
+        """
         # Get filename, concat everything past 'src'
         file_path = self.view.file_name().replace('.py', '').split('/')
         file_path = file_path[file_path.index('src') + 1:]
@@ -134,6 +142,7 @@ class RunTestsFolderCommand(RunTestsMixin, sublime_plugin.WindowCommand):
 
     def run(self, paths):
         path = self.get_path(paths)
+        sublime.set_clipboard(path)
         self.run_tests(path)
         super(RunTestsFolderCommand, self).run()
 

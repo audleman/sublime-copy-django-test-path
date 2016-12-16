@@ -1,6 +1,6 @@
 [
     {
-        "caption": "Run test class/function",
+        "caption": "Run tests",
         "command": "run_tests_file"
     }
 ]
