@@ -113,7 +113,6 @@ class RunTestsFileCommand(RunTestsMixin, sublime_plugin.TextCommand):
         return f_path
 
     def run(self, edit, action):
-        print 'Action is %s' % action
         path = self.get_path()
         self.view.set_status('a_gtp', '')
         sublime.set_clipboard(path)
