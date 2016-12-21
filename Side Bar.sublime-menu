@@ -5,7 +5,8 @@
     // 	"children":
     // [
         { "caption": "-" },
-	    { "caption": "Run tests", "command": "run_tests_folder", "args": {"paths": []} }
+	    { "caption": "Run test(s)", "command": "run_tests_folder", "args": {"paths": [], "action": "run"} },
+        { "caption": "Copy test path", "command": "run_tests_folder", "args": {"paths": [], "action": "copy_only"} }
     // ]
 	// }
 ]

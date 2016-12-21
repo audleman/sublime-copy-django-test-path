@@ -1,6 +1,12 @@
 [
     {
-        "caption": "Run tests",
-        "command": "run_tests_file"
+        "caption": "Run test(s)",
+        "command": "run_tests_file",
+        "args": {"action": "run"}
+    },
+    {
+        "caption": "Copy test path",
+        "command": "run_tests_file",
+        "args": {"action": "copy_only"}
     }
 ]

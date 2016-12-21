@@ -112,12 +112,14 @@ class RunTestsFileCommand(RunTestsMixin, sublime_plugin.TextCommand):
                 f_path = '%s.%s' % (f_path, fun_name)
         return f_path
 
-    def run(self, edit):
+    def run(self, edit, action):
+        print 'Action is %s' % action
         path = self.get_path()
         self.view.set_status('a_gtp', '')
         sublime.set_clipboard(path)
         self.view.set_status('a_gtp', path)
-        self.run_tests(path)
+        if action == 'run':
+            self.run_tests(path)
 
 
 class RunTestsFolderCommand(RunTestsMixin, sublime_plugin.WindowCommand):
@@ -140,9 +142,10 @@ class RunTestsFolderCommand(RunTestsMixin, sublime_plugin.WindowCommand):
         file_path = '.'.join(file_path)
         return file_path
 
-    def run(self, paths):
+    def run(self, paths, action):
         path = self.get_path(paths)
         sublime.set_clipboard(path)
-        self.run_tests(path)
+        if action == 'run':
+            self.run_tests(path)
         super(RunTestsFolderCommand, self).run()
 

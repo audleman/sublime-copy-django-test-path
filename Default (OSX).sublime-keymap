@@ -1,5 +1,5 @@
 [
     { 
-        "keys": ["ctrl+alt+q"], "command": "run_tests_file"
+        "keys": ["ctrl+t"], "command": "run_tests_file"
     }
 ]
